@@ -112,7 +112,7 @@ final class TorchManager {
             isTorchOn = false
             brightnessBeforeTorch = nil
         } catch {
-            Logger.default?.error("Failed to disable torch: \(error.localizedDescription)")
+            print("Failed to disable torch: \(error.localizedDescription)")
         }
     }
     

@@ -5,7 +5,7 @@
 //  Created by Clara Muniz on 28/05/26.
 //
 
-import SwiftUI
+internal import SwiftUI
 
 struct ContentView: View {
     @State private var shouldUseVisionKit: Bool = false
