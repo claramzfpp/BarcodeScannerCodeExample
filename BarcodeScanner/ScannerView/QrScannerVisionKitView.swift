@@ -217,22 +217,13 @@ class QrScannerVisionKitCoordinator: NSObject, DataScannerViewControllerDelegate
             return
         }
         
-        let currentTime = Date()
-        let timeSinceLastDetection = currentTime.timeIntervalSince(lastDetectionTime)
+        let currentTime = Date()        
+        let codeType = CodeType(symbology: code.observation.symbology)
+        let scanResult = ScanResult(value: payload, type: codeType)
         
-        // Debounce: only process if code is different or enough time has passed
-        if payload != lastDetectedCode || timeSinceLastDetection > 0.2 {
-            lastDetectedCode = payload
-            lastDetectionTime = currentTime
-            hasDetectedCode = true
-            
-            let codeType = CodeType(symbology: code.observation.symbology)
-            let scanResult = ScanResult(value: payload, type: codeType)
-            
-            DispatchQueue.main.async {
-                self.parent?.result = scanResult
-                self.stopScanning()
-            }
+        DispatchQueue.main.async {
+            self.parent?.result = scanResult
+            self.stopScanning()
         }
     }
 }

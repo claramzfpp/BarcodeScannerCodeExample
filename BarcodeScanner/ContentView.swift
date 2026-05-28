@@ -27,12 +27,15 @@ struct ContentView: View {
             .frame(maxHeight: 400)
             
             VStack {
-                Text(result?.value ?? "")
+                Text(result?.value ?? "").font(.title)
             }
             
             Spacer()
         }
         .padding()
+        .onChange(of: shouldUseVisionKit) { oldValue, newValue in
+            result = nil
+        }
     }
 }
 
