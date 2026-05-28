@@ -26,11 +26,6 @@ struct QrScannerVisionKitView: UIViewControllerRepresentable {
     
     var scannerViewController: DataScannerViewController
     
-    /// Data types that the scanner will recognize
-    var recognizedDataTypes: Set<DataScannerViewController.RecognizedDataType> {
-        [.barcode(symbologies: [.qr, .dataMatrix, .code39, .code128])]
-    }
-    
     /// Checks if the device supports and has access to the data scanner
     static var scannerAvailable: Bool {
         DataScannerViewController.isSupported &&
@@ -40,7 +35,7 @@ struct QrScannerVisionKitView: UIViewControllerRepresentable {
     init(_ result: Binding<ScanResult?>) {
         self._result = result
         self.scannerViewController = DataScannerViewController(
-            recognizedDataTypes: recognizedDataTypes,
+            recognizedDataTypes: [.barcode(symbologies: [.qr, .dataMatrix, .code39, .code128])],
             qualityLevel: .balanced,
             recognizesMultipleItems: true,
             isHighFrameRateTrackingEnabled: true,

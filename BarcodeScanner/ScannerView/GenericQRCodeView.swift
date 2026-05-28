@@ -40,8 +40,7 @@ internal import SwiftUI
 struct GenericQRCodeView: View {
     @Binding var result: ScanResult?
     @Binding var shouldUseVisionKit: Bool
-    let payloadFilter: ((String) -> Bool)?
-
+    
     init(
         result: Binding<ScanResult?>,
         shouldUseVisionKit: Binding<Bool>
