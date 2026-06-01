@@ -14,12 +14,18 @@ class QrScannerVisionKitCoordinator: NSObject, DataScannerViewControllerDelegate
     
     var parent: QrScannerVisionKitView?
     private var lastDetectedCode: String = ""
-    private var lastDetectionTime: Date = Date()
-    private var hasDetectedCode = false
-    
+    private var lastDetectionTime: Date = .distantPast
+
+    /// Minimum interval before the same payload may be reported again.
+    /// Lets `didUpdate` fire continuously while a code is on screen without
+    /// re-publishing it on every frame, while still allowing a brand new code
+    /// (or the same code after it leaves and re-enters the frame) to scan
+    /// immediately.
+    private let debounceInterval: TimeInterval = 0.3
+
     private var luminosityCheckTimer: Timer?
     private let torchManager = TorchManager()
-    
+
     /// Interval in seconds for luminosity checks
     private let luminosityCheckInterval: TimeInterval = 1.0
     
@@ -131,10 +137,6 @@ class QrScannerVisionKitCoordinator: NSObject, DataScannerViewControllerDelegate
     
     /// Processes a single recognized item and extracts barcode data if applicable.
     private func processItem(item: RecognizedItem) {
-        guard !hasDetectedCode else {
-            return
-        }
-        
         switch item {
         case .barcode(let code):
             handleBarcodeDetection(code: code)
@@ -145,19 +147,32 @@ class QrScannerVisionKitCoordinator: NSObject, DataScannerViewControllerDelegate
             break
         }
     }
-    
+
     /// Handles the detection and processing of a barcode.
+    ///
+    /// The scanner stays running: once the user points the camera at a
+    /// different code (or the current one leaves and re-enters the frame), the
+    /// new payload is published. A short debounce prevents the same code from
+    /// being re-published on every tracking frame.
     private func handleBarcodeDetection(code: RecognizedItem.Barcode) {
         guard let payload = code.payloadStringValue, !payload.isEmpty else {
             return
         }
-        
+
+        let now = Date()
+        if payload == lastDetectedCode,
+           now.timeIntervalSince(lastDetectionTime) < debounceInterval {
+            return
+        }
+
+        lastDetectedCode = payload
+        lastDetectionTime = now
+
         let codeType = CodeType(symbology: code.observation.symbology)
         let scanResult = ScanResult(value: payload, type: codeType)
-        
+
         DispatchQueue.main.async {
             self.parent?.result = scanResult
-            self.stopScanning()
         }
     }
 }

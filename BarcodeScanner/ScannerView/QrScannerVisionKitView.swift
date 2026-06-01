@@ -37,9 +37,9 @@ struct QrScannerVisionKitView: UIViewControllerRepresentable {
         self.scannerViewController = DataScannerViewController(
             recognizedDataTypes: [.barcode(symbologies: [.qr, .dataMatrix, .code39, .code128])],
             qualityLevel: .balanced,
-            recognizesMultipleItems: true,
-            isHighFrameRateTrackingEnabled: true,
-            isHighlightingEnabled: true
+            recognizesMultipleItems: false,
+            isHighFrameRateTrackingEnabled: false,
+            isHighlightingEnabled: false
         )
     }
     
