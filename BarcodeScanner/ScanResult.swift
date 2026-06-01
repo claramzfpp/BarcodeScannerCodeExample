@@ -10,6 +10,16 @@ internal import Vision
 public struct ScanResult: Equatable {
     public let value: String
     public let type: CodeType
+
+    /// Structured interpretation of `value`. Computed on access so callers can
+    /// display the raw string and the parsed fields side by side without paying
+    /// the parsing cost up front.
+    var content: ScanContent { ScanContent.parse(value) }
+
+    public init(value: String, type: CodeType) {
+        self.value = value
+        self.type = type
+    }
 }
 
 public enum CodeType {
