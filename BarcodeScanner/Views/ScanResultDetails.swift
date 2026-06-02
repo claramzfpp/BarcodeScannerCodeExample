@@ -15,27 +15,27 @@ internal import SwiftUI
 /// useful — main screen, history list, debug inspectors.
 ///
 /// The body is split into three vertical sections:
-/// 1. **Simbologia** — the symbology that produced the scan.
-/// 2. **Valor cru** — the exact string returned by the scanner.
-/// 3. **Conteúdo detectado** — a per-case breakdown of the parsed
+/// 1. **Symbology** — the symbology that produced the scan.
+/// 2. **Raw value** — the exact string returned by the scanner.
+/// 3. **Detected content** — a per-case breakdown of the parsed
 ///    ``ScanContent``.
 struct ScanResultDetails: View {
     let result: ScanResult
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            section("Simbologia") {
-                row("Tipo", String(describing: result.type))
+            section("Symbology") {
+                row("Type", String(describing: result.type))
             }
 
-            section("Valor cru") {
+            section("Raw value") {
                 Text(result.value)
                     .font(.system(.body, design: .monospaced))
                     .textSelection(.enabled)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
 
-            section("Conteúdo detectado: \(result.content.kindDescription)") {
+            section("Detected content: \(result.content.kindDescription)") {
                 contentDetail(result.content)
             }
         }
@@ -54,54 +54,54 @@ struct ScanResultDetails: View {
 
         case .wifi(let ssid, let password, let security, let hidden):
             row("SSID", ssid)
-            row("Senha", password ?? "—")
-            row("Segurança", security ?? "—")
-            row("Oculta", hidden ? "Sim" : "Não")
+            row("Password", password ?? "—")
+            row("Security", security ?? "—")
+            row("Hidden", hidden ? "Yes" : "No")
 
         case .email(let to, let subject, let body):
-            row("Para", to)
-            if let subject { row("Assunto", subject) }
-            if let body { row("Corpo", body) }
+            row("To", to)
+            if let subject { row("Subject", subject) }
+            if let body { row("Body", body) }
 
         case .sms(let to, let body):
-            row("Para", to)
-            if let body { row("Mensagem", body) }
+            row("To", to)
+            if let body { row("Message", body) }
 
         case .phone(let number):
-            row("Número", number)
+            row("Number", number)
 
         case .geo(let lat, let lon, let query):
             row("Latitude", String(lat))
             row("Longitude", String(lon))
-            if let query { row("Consulta", query) }
+            if let query { row("Query", query) }
 
         case .contact(let card):
-            if let name = card.fullName { row("Nome", name) }
-            if let org = card.organization { row("Organização", org) }
-            if let title = card.title { row("Cargo", title) }
-            if !card.phones.isEmpty { row("Telefones", card.phones.joined(separator: ", ")) }
-            if !card.emails.isEmpty { row("E-mails", card.emails.joined(separator: ", ")) }
-            if let address = card.address { row("Endereço", address) }
+            if let name = card.fullName { row("Name", name) }
+            if let org = card.organization { row("Organization", org) }
+            if let title = card.title { row("Title", title) }
+            if !card.phones.isEmpty { row("Phones", card.phones.joined(separator: ", ")) }
+            if !card.emails.isEmpty { row("Emails", card.emails.joined(separator: ", ")) }
+            if let address = card.address { row("Address", address) }
             if let url = card.url { row("URL", url) }
 
         case .calendarEvent(let summary, let start, let end, let location):
-            if let summary { row("Título", summary) }
-            if let start { row("Início", start) }
-            if let end { row("Fim", end) }
-            if let location { row("Local", location) }
+            if let summary { row("Title", summary) }
+            if let start { row("Start", start) }
+            if let end { row("End", end) }
+            if let location { row("Location", location) }
 
         case .otpAuth(let label, let issuer, let secret, let algorithm):
-            if let label { row("Conta", label) }
-            if let issuer { row("Emissor", issuer) }
-            if let secret { row("Segredo", secret) }
-            if let algorithm { row("Algoritmo", algorithm) }
+            if let label { row("Account", label) }
+            if let issuer { row("Issuer", issuer) }
+            if let secret { row("Secret", secret) }
+            if let algorithm { row("Algorithm", algorithm) }
 
         case .pixBRCode(let payload):
             row("Payload", payload)
 
         case .crypto(let scheme, let address):
-            row("Rede", scheme)
-            row("Endereço", address)
+            row("Network", scheme)
+            row("Address", address)
 
         case .text(let text):
             Text(text)

@@ -44,7 +44,7 @@ struct ContentView: View {
                 if let result {
                     ScanResultDetails(result: result)
                 } else {
-                    Text("Aponte a câmera para um código…")
+                    Text("Point the camera at a code…")
                         .foregroundStyle(.secondary)
                         .padding(.top)
                 }

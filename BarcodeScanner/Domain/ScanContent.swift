@@ -36,22 +36,21 @@ enum ScanContent: Equatable {
 extension ScanContent {
     /// Short human label describing the detected content kind.
     ///
-    /// Used by the UI to title the "detected content" section. Localized in
-    /// Portuguese to match the rest of the visible strings in the app.
+    /// Used by the UI to title the "detected content" section.
     var kindDescription: String {
         switch self {
         case .url: return "URL"
         case .wifi: return "Wi-Fi"
-        case .email: return "E-mail"
+        case .email: return "Email"
         case .sms: return "SMS"
-        case .phone: return "Telefone"
-        case .geo: return "Localização"
-        case .contact: return "Contato"
-        case .calendarEvent: return "Evento de calendário"
-        case .otpAuth: return "Autenticador (OTP)"
+        case .phone: return "Phone"
+        case .geo: return "Location"
+        case .contact: return "Contact"
+        case .calendarEvent: return "Calendar event"
+        case .otpAuth: return "Authenticator (OTP)"
         case .pixBRCode: return "PIX BR Code"
-        case .crypto: return "Endereço de criptomoeda"
-        case .text: return "Texto"
+        case .crypto: return "Crypto address"
+        case .text: return "Text"
         }
     }
 }
