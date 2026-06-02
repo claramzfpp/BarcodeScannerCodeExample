@@ -1,5 +1,5 @@
 //
-//  ScanResult.swift
+//  CodeType.swift
 //  BarcodeScanner
 //
 //  Created by Clara Muniz on 28/05/26.
@@ -7,21 +7,11 @@
 
 internal import Vision
 
-public struct ScanResult: Equatable {
-    public let value: String
-    public let type: CodeType
-
-    /// Structured interpretation of `value`. Computed on access so callers can
-    /// display the raw string and the parsed fields side by side without paying
-    /// the parsing cost up front.
-    var content: ScanContent { ScanContent.parse(value) }
-
-    public init(value: String, type: CodeType) {
-        self.value = value
-        self.type = type
-    }
-}
-
+/// Symbologies recognized by the scanner pipeline.
+///
+/// The enum is intentionally narrower than `VNBarcodeSymbology` — it only
+/// surfaces the formats the app actually handles in its UI. Anything else
+/// collapses to `.unknown`, which the rendering layer treats as plain text.
 public enum CodeType {
     case qr
     case dataMatrix
@@ -29,6 +19,8 @@ public enum CodeType {
     case code128
     case unknown
 
+    /// Bridges Vision's `VNBarcodeSymbology` into the app's narrower enum.
+    /// Unsupported symbologies fall through to `.unknown`.
     init(symbology: VNBarcodeSymbology) {
         switch symbology {
         case .qr:
