@@ -5,7 +5,6 @@
 //  Created by Clara Muniz on 28/05/26.
 //
 
-public import AVFoundation
 import CoreMedia
 
 /// Abstraction over `AVCaptureDevice.Format` for the subset of values the

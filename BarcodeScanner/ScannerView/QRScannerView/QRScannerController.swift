@@ -18,9 +18,7 @@ public class QRScannerController: UIViewController {
     
     // Use a dedicated serial queue for all capture session operations to prevent thread collision
     private let sessionQueue = DispatchQueue(label: "com.smarthome.qrscanner.sessionQueue")
-    private let videoOutputQueue = DispatchQueue(label: "com.smarthome.qrscanner.videoOutput")
-    private let screenRect = UIScreen.main.bounds
-    
+    private let videoOutputQueue = DispatchQueue(label: "com.smarthome.qrscanner.videoOutput")    
     private let torchManager = TorchManager(turnOnThreshold: -2.0, turnOffThreshold: 3.0)
     
     init() {
