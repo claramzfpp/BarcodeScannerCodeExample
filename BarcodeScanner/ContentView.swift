@@ -53,7 +53,7 @@ struct ContentView: View {
             Spacer(minLength: 0)
         }
         .padding()
-        .onChange(of: shouldUseVisionKit) { _, _ in
+        .onChange(of: shouldUseVisionKit) { _ in
             result = nil
         }
     }
